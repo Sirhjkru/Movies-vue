@@ -10,7 +10,7 @@
       <img src="~/assets/image/arrow.svg" class="search-form__submit-image" />
     </c-button>
     <p v-if="invalidQuery" style="color: red" class='search-form__error'>
-      Минимальная длинна должна быть больше двух символов
+      Минимальная длина должна быть больше двух символов
     </p>
   </form>
 </template>
@@ -46,7 +46,7 @@ export default defineComponent({
       this.searchText = e
     },
     onSubmit(): void {
-      this.$emit('findIt', this.searchText)
+      this.$emit('search', this.searchText)
     },
   },
 })

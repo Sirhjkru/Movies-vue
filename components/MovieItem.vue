@@ -9,7 +9,7 @@
 import { defineComponent, PropType } from 'vue'
 import { IMovieItem, IMoviesName } from './models/IMovies'
 import { mapGetters } from 'vuex'
-import { handlerImgURL } from '../utils/handlerImg'
+import { getImgURL } from '../utils/getImgURL'
 export default defineComponent({
   name: 'movie-item',
   props: {
@@ -21,7 +21,7 @@ export default defineComponent({
   computed: {
     ...mapGetters(['GET_LANG']),
     imgUrl(): string {
-      return handlerImgURL(this.item?.image?.url || '')
+      return getImgURL(this.item?.image?.url || '')
     },
     itemName(): string | number {
       return this.item

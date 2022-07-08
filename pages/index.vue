@@ -6,7 +6,7 @@
           <h1 class="info__title">Поиск фильмов</h1>
         </template>
       </Header>
-      <SearchForm @findIt="sortedFilm" class="info__search" />
+      <SearchForm @search="sortedFilm" class="info__search" />
       <Footer />
     </section>
     <section class="content">
