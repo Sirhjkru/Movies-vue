@@ -1,5 +1,5 @@
 <template>
-  <input v-model.trim="componentValue" @input="emitEvent" type="text" />
+  <input v-model.trim="componentValue" @input="$emit('input', $event.target.value)" type="text" />
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -17,7 +17,7 @@ export default defineComponent({
   },
   methods: {
     emitEvent(e: { target: { value: string | number } }): void {
-      this.$emit('emitEvent', e.target.value)
+      this.$emit('input', e.target.value)
     },
     emptyInput(): void {
       this.componentValue = ''

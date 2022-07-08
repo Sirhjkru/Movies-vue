@@ -2,14 +2,14 @@
   <form @submit.prevent @submit="onSubmit" class="search-form">
     <c-input
       class="search__input"
-      :value="searchText"
+      v-model="searchText"
       @emitEvent="handlerEvent"
       placeholder="Название фильма..."
     />
     <c-button type="sybmit" class="search-form__submit">
       <img src="~/assets/image/arrow.svg" class="search-form__submit-image" />
     </c-button>
-    <p v-if="invalidQuery" style="color: red" class='search-form__error'>
+    <p v-if="invalidQuery" style="color: red" class="search-form__error">
       Минимальная длина должна быть больше двух символов
     </p>
   </form>
@@ -36,16 +36,12 @@ export default defineComponent({
     validInputLength(str: string) {
       return str.length > this.minLength
     },
-    handlerEvent(e: string | number): void {
-      e = e.toString()
-      if (!this.validInputLength(e)) {
+    onSubmit() {
+      if (!this.validInputLength(this.searchText.toString())) {
         this.invalidQuery = true
         return
       }
       this.invalidQuery = false
-      this.searchText = e
-    },
-    onSubmit(): void {
       this.$emit('search', this.searchText)
     },
   },
@@ -79,7 +75,7 @@ export default defineComponent({
   width: 25px;
 }
 
-.search-form__error{
+.search-form__error {
   position: absolute;
   top: 15%;
   left: 1vw;
