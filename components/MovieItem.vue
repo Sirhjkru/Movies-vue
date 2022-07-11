@@ -36,13 +36,21 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scoped>
-// .card {
-//   display: flex;
-//   flex-direction: column;
-// }
-
-// .card__image {
-//   width: 100%;
-//   object-fit: cover;
-// }
+.card {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 0 3px;
+  &__image {
+    width: 100%;
+    object-fit: cover;
+  }
+  &__title {
+    font-size: 20px;
+  }
+  &__subtitle {
+    font-size: 15px;
+  }
+}
 </style>

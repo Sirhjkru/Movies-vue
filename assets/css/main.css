@@ -1,1 +1,30 @@
 @import url('~assets/fonts/fonts.css');
+body {
+  width: 100%;
+  min-width: 320px;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Inter;
+}
+body::-webkit-scrollbar,
+section::-webkit-scrollbar,
+ul::-webkit-scrollbar  {
+  width: 12px;
+}
+body::-webkit-scrollbar-thumb,
+section::-webkit-scrollbar-thumb, 
+ul::-webkit-scrollbar-thumb {
+  background-color: #ebe8e8;
+  border-radius: 20px;
+  border: 3px solid rgba(0, 0, 0, 0.2);
+}
+body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+section::-webkit-scrollbar-track,
+ul::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+}
+

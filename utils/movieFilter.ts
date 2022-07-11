@@ -1,3 +1,6 @@
+/*
+  функция выполняет поиск одного любого параметра элемента по массиву
+*/
 export function movieFilter(
   movies: Array<object>,
   query: string | number = '',

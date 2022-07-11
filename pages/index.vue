@@ -6,23 +6,31 @@
           <h1 class="info__title">Поиск фильмов</h1>
         </template>
       </Header>
-      <SearchForm @search="sortedFilm" class="info__search" />
+      <SearchForm @search="SAVE_QUERY" class="info__search" />
       <Footer />
     </section>
     <section class="content">
-      <MoviesList :items="renderFilms" listForm="block" />
-      <v-page
-        class="main__pagination"
-        v-if="sortedList.length"
-        :page-size-menu="false"
-        :border="true"
-        :info="false"
-        :total-row="sortedList.length"
-        :first="false"
-        :last="false"
-        align="left"
-        @page-change="pageChange"
-      ></v-page>
+      <MoviesList
+        class="content__cards"
+        :items="MOVIE_PAGE"
+        :listForm="checked"
+      />
+      <div v-show="FILTER_MOVIES.length" class="content__control">
+        <div class="checkbox-block">
+          <input type="checkbox" v-model="checked" />
+          <p class="checkbox-block__title">Плиточная раскладка</p>
+        </div>
+        <v-page
+          class="content__pagination"
+          :border="true"
+          :info="false"
+          :total-row="FILTER_MOVIES.length"
+          :first="false"
+          :last="false"
+          align="left"
+          @page-change="SAVE_PARAMS_PAGE"
+        ></v-page>
+      </div>
     </section>
   </main>
 </template>
@@ -34,43 +42,25 @@ import Footer from '../components/Footer.vue'
 import Header from '../components/Header.vue'
 import SearchForm from '../components/SearchForm.vue'
 import MoviesList from '../components/MoviesList.vue'
-import { movieFilter } from '../utils/movieFilter'
 
 export default Vue.extend({
-  data(): {
-    pageSize: number
-    pageNumber: number
-    sortedList: Array<any>
-  } {
+  data() {
     return {
-      sortedList: [],
-      pageSize: 10,
-      pageNumber: 1,
+      checked: true,
     }
   },
   components: { Footer, Header, SearchForm, MoviesList },
   name: 'Main',
   computed: {
-    ...mapGetters('useApi', ['MOVIES']),
-    renderFilms(): Array<object> {
-      const startСounting: number = Math.ceil(
-        (this.pageNumber - 1) * this.pageSize
-      )
-      const offset: number = Math.ceil(this.pageSize * this.pageNumber)
-      return this.sortedList.slice(startСounting, offset)
-    },
+    ...mapGetters('useApi', ['FILTER_MOVIES', 'MOVIE_PAGE']),
   },
   methods: {
-    ...mapActions('useApi', ['GET_MOVIES_FROM_API']),
+    ...mapActions('useApi', [
+      'GET_MOVIES_FROM_API',
+      'SAVE_PARAMS_PAGE',
+      'SAVE_QUERY',
+    ]),
     ...mapMutations('useApi', ['DISABLE_LOADING']),
-    sortedFilm(query: string | number): any {
-      if (!query) return (this.sortedList = [])
-      this.sortedList = movieFilter(this.MOVIES, query)
-    },
-    pageChange(e: { pageSize: number; pageNumber: number }): void {
-      this.pageSize = e.pageSize
-      this.pageNumber = e.pageNumber
-    },
   },
   mounted() {
     this.GET_MOVIES_FROM_API().then(this.DISABLE_LOADING)
@@ -78,14 +68,6 @@ export default Vue.extend({
 })
 </script>
 <style lang="scss">
-body {
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Inter;
-  font-style: Medium;
-}
 .main {
   min-width: 100%;
   min-height: 100vh;
@@ -95,26 +77,68 @@ body {
   flex-direction: row;
   justify-content: center;
   align-items: stretch;
+  @media screen and (max-width: 1024px) {
+    flex-direction: column;
+  }
 }
+
 .info {
-  min-width: 40%;
+  min-width: 30%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   background-color: #000000;
-}
-
-.info__title {
-  color: #ffffff;
-  font-size: 42px;
-}
-
-.info__search {
-  flex-grow: 1;
+  &__title {
+    color: #fff;
+    font-size: 42px;
+  }
+  &__search {
+    flex-grow: 1;
+  }
+  @media screen and (max-width: 1024px) {
+    padding-bottom: 20px;
+  }
 }
 
 .content {
-  min-width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 70%;
   background-color: #e5e5e5;
+  &__cards {
+    display: flex;
+    align-items: center;
+  }
+  &__control {
+    min-width: 70%;
+    background-color: rgba(229, 229, 229, 0.95);
+    position: fixed;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+    @media screen and (max-width: 1024px) {
+      width: 100%;
+    }
+    .checkbox-block {
+      margin: 0 auto;
+      display: flex;
+      input {
+        &:hover {
+          cursor: $cursor;
+        }
+      }
+      &__title {
+        font-size: 15px;
+      }
+    }
+  }
+  &__pagination {
+    align-items: center;
+    margin: 0 auto;
+  }
+  @media screen and (max-width: 1024px) {
+    flex-grow: 1;
+  }
 }
 </style>

@@ -1,3 +1,4 @@
+/** Для подключения локализации */
 export const state = () => ({
   currentLang:"RU",
 })

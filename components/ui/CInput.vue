@@ -1,24 +1,25 @@
 <template>
-  <input v-model.trim="componentValue" @input="$emit('input', $event.target.value)" type="text" />
+  <input
+    v-model.trim="componentValue"
+    type="text"
+    @input="$emit('input', $event.target.value)"
+  />
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'c-input',
   props: {
-    value: [String, Number],
+    value: [String, Number, Boolean],
   },
   data(): {
-    componentValue: string | number
+    componentValue: string | number | boolean
   } {
     return {
       componentValue: '',
     }
   },
   methods: {
-    emitEvent(e: { target: { value: string | number } }): void {
-      this.$emit('input', e.target.value)
-    },
     emptyInput(): void {
       this.componentValue = ''
     },

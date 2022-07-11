@@ -1,16 +1,18 @@
 <template>
   <form @submit.prevent @submit="onSubmit" class="search-form">
-    <c-input
-      class="search__input"
-      v-model="searchText"
-      @emitEvent="handlerEvent"
-      placeholder="Название фильма..."
-    />
-    <c-button type="sybmit" class="search-form__submit">
-      <img src="~/assets/image/arrow.svg" class="search-form__submit-image" />
-    </c-button>
-    <p v-if="invalidQuery" style="color: red" class="search-form__error">
-      Минимальная длина должна быть больше двух символов
+    <div class="search-box">
+      <img src="~/assets/image/search.svg" class="search-box__image" />
+      <c-input
+        class="search-box__input"
+        v-model.trim="value"
+        placeholder="Название фильма..."
+      />
+      <c-button type="sybmit" class="search-box__submit">
+        <img src="~/assets/image/arrow.svg" class="search-box__submit-image" />
+      </c-button>
+    </div>
+    <p v-show="invalidQuery" style="color: red" class="search-form__error">
+      Минимальная длина 3 символа
     </p>
   </form>
 </template>
@@ -22,27 +24,29 @@ export default defineComponent({
   name: 'search-form',
   components: { CInput, CButton },
   data(): {
-    searchText: string | number
+    value: string | number
     invalidQuery: boolean
     minLength: number
   } {
     return {
-      searchText: '',
+      value: '',
       invalidQuery: false,
       minLength: 2,
     }
+  },
+  computed: {},
+  watch: {
+    value() {
+      this.invalidQuery = !this.validInputLength(this.value.toString())
+    },
   },
   methods: {
     validInputLength(str: string) {
       return str.length > this.minLength
     },
     onSubmit() {
-      if (!this.validInputLength(this.searchText.toString())) {
-        this.invalidQuery = true
-        return
-      }
-      this.invalidQuery = false
-      this.$emit('search', this.searchText)
+      if (this.invalidQuery) return
+      this.$emit('search', this.value)
     },
   },
 })
@@ -51,33 +55,48 @@ export default defineComponent({
 .search-form {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
-  align-items: flex-start;
-}
-.search__input {
-  border: none;
-  border-radius: 5px;
-  height: 35px;
-  margin-left: 20px;
-  width: 60%;
-  position: relative;
-}
-.search-form__submit {
-  position: absolute;
-  left: 23.5vw;
-  padding-top: 5px;
-  background: none;
-  border: 0;
-  color: #fff;
-}
+  flex-direction: column;
+  .search-box {
+    margin: 0 auto;
+    display: flex;
+    background-color: #fff;
+    border-radius: 5px;
+    height: 35px;
+    min-width: 120px;
+    width: 90%;
+    &__image {
+      border-radius: 5px;
+      background-color: #ebe8e8;
+    }
+    &__input {
+      flex-grow: 1;
+      border: none;
+      margin-left: 20px;
+      outline: 0 !important;
+      &:hover {
+        cursor: $cursor;
+      }
+    }
+    &__submit {
+      position: relative;
+      padding-top: 5px;
+      background: none;
+      border: 0;
+      color: #fff;
+      transition: all 0.5s ease;
+      &:hover {
+        cursor: $cursor;
+        background-color: $blackout;
+      }
+    }
+    &__submit-image {
+      width: 25px;
+      object-fit: contain;
+    }
+  }
 
-.search-form__submit-image {
-  width: 25px;
-}
-
-.search-form__error {
-  position: absolute;
-  top: 15%;
-  left: 1vw;
+  &__error {
+    margin: 10px auto
+  }
 }
 </style>

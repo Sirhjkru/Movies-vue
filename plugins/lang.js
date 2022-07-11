@@ -1,3 +1,4 @@
+/** Хотел добавить локали */
 import { langRU } from '~/components/lang/en'
 import { langEN } from '~/components/lang/ru'
 
