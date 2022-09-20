@@ -12,7 +12,7 @@
       </c-button>
     </div>
     <p v-show="invalidQuery" style="color: red" class="search-form__error">
-      Минимальная длина 3 символа
+      Минимальная длина 3 символа.
     </p>
   </form>
 </template>
@@ -96,7 +96,7 @@ export default defineComponent({
   }
 
   &__error {
-    margin: 10px auto
+    margin: 10px auto;
   }
 }
 </style>
