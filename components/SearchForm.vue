@@ -1,7 +1,11 @@
 <template>
   <form @submit.prevent @submit="onSubmit" class="search-form">
     <div class="search-box">
-      <img src="~/assets/image/search.svg" class="search-box__image" />
+      <img
+        src="~/assets/image/search.svg"
+        @click="onSubmit"
+        class="search-box__image"
+      />
       <c-input
         class="search-box__input"
         v-model.trim="value"
@@ -37,14 +41,19 @@ export default defineComponent({
   computed: {},
   watch: {
     value() {
-      this.invalidQuery = !this.validInputLength(this.value.toString())
+      this.checkInput()
     },
   },
   methods: {
     validInputLength(str: string) {
       return str.length > this.minLength
     },
+
+    checkInput() {
+      this.invalidQuery = !this.validInputLength(this.value.toString())
+    },
     onSubmit() {
+      this.checkInput()
       if (this.invalidQuery) return
       this.$emit('search', this.value)
     },
@@ -67,6 +76,9 @@ export default defineComponent({
     &__image {
       border-radius: 5px;
       background-color: #ebe8e8;
+      &:hover {
+        cursor: pointer;
+      }
     }
     &__input {
       flex-grow: 1;
